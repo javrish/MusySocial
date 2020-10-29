@@ -8,7 +8,10 @@ public class CommandExecutor {
 		
 		switch(input[0]) { //switch case to under the command
 			case "play" : { //instruction for play command
-				return "Playing: "+input[1];
+				if(searchSongByName(input[1]))
+					return "Playing: "+input[1];
+				else
+					return "Song not found!";
 			}
 			default: {
 				return "Invalid Command!";
@@ -16,5 +19,10 @@ public class CommandExecutor {
 		} //END of switch
 		
 	} //END of execute
+	
+	private boolean searchSongByName(String songName) {
+		return true;
+		
+	}
 
 }//END of class
