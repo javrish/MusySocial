@@ -1,6 +1,14 @@
 package com.javrish.executor;
 
+import com.javrish.facade.MusyFacade;
+
 public class CommandExecutor {
+	
+	MusyFacade musyFacade;
+	
+	public CommandExecutor() {
+		musyFacade = new MusyFacade();
+	}
 	
 	public String execute(String command) {
 		
@@ -21,7 +29,8 @@ public class CommandExecutor {
 	} //END of execute
 	
 	private boolean searchSongByName(String songName) {
-		return true;
+		
+		return musyFacade.searchSongByName(songName);
 		
 	}
 

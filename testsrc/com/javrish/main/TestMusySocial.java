@@ -10,6 +10,7 @@ public class TestMusySocial {
 		TestMusySocial testMusySocial = new TestMusySocial();
 		testMusySocial.playMusicTest("play Trampoline");
 		testMusySocial.invalidCommandTest("sing Trampoline");
+		testMusySocial.playMusicNotInDBTest("play Mood");
 		
 		System.out.println("All Test Cases Passes!");
 
@@ -25,6 +26,12 @@ public class TestMusySocial {
 		CommandExecutor executor =  new CommandExecutor();
 		
 		assertOutput("Invalid Command!",executor.execute(command));
+		
+	}
+	
+	private void playMusicNotInDBTest(String command) {
+		CommandExecutor executor =  new CommandExecutor();
+		assertOutput("Song not found!",executor.execute(command));
 		
 	}
 	
