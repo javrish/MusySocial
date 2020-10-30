@@ -9,7 +9,7 @@ public class CommandExecutor {
 	public CommandExecutor() {
 		musyFacade = new MusyFacade();
 	}
-	
+	//login javrish jav123
 	public String execute(String command) {
 		
 		String[] input = command.split("[ ]"); //Splitting to command to understand command and values
@@ -21,6 +21,21 @@ public class CommandExecutor {
 				else
 					return "Song not found!";
 			}
+			
+			case "login" : { //instruction for login command
+				if(input.length < 3) {
+					return "Password parameter missing!";
+				}
+				
+				String username = input[1];
+				String password = input[2];
+				
+				if(authoriseLogin(username,password))
+					return username+" Logged in Successfully!";
+				else
+					return "Invalid username or password!";
+			}
+			
 			default: {
 				return "Invalid Command!";
 			}
@@ -28,8 +43,11 @@ public class CommandExecutor {
 		
 	} //END of execute
 	
-	private boolean searchSongByName(String songName) {
+	private boolean authoriseLogin(String username, String password) {
+		return musyFacade.authoriseLogin(username,password);
 		
+	}
+	private boolean searchSongByName(String songName) {
 		return musyFacade.searchSongByName(songName);
 		
 	}
