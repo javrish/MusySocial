@@ -14,7 +14,5 @@ public class MusyRunner {
 		while (!(command = sc.nextLine()).equals("q")) {
 			System.out.println(executor.execute(command));
 		}
-
 	}
-
 }

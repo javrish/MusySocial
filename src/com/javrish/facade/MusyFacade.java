@@ -1,13 +1,14 @@
 package com.javrish.facade;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import com.javrish.dataobject.SongDO;
+import com.javrish.dataobject.UserDO;
+
 public class MusyFacade {
-	List<String> songDB;
-	Map<String, String> userDB;
+	Map<String, SongDO> songDB;
+	Map<String, UserDO> userDB;
 	
 	public MusyFacade() {
 		initialiseSongDB();
@@ -15,30 +16,47 @@ public class MusyFacade {
 	}
 	
 	private void initialiseSongDB() {
-		songDB = new ArrayList<>();
-		songDB.add("Trampoline");
+		songDB = new HashMap<>();
+		SongDO song = new SongDO();
+		
+		song.setSongName("Trampoline");
+		song.setSongId(10001l);
+		song.setArtist("Zayn");
+		
+		songDB.put(song.getSongName(),song);
 	}
 
 	private void initialiseUserDB() {
 		userDB = new HashMap<>();
-		userDB.put("javrish", "jav123");
+		UserDO user = new UserDO();
+		
+		user.setUsername("javrish");
+		user.setPassword("jav123");
+		user.setUserId(1000001l);
+		user.setFirstName("Rishabh");
+		user.setLastName("Pathak");
+		
+		userDB.put("javrish", user);
 	}
 	
-	public boolean searchSongByName(String songName) {
-		if(songDB.contains(songName))
-			return true;
+	public SongDO searchSongByName(String songName) {
+		if(songDB.containsKey(songName))
+			return songDB.get(songName);
 		
-		return false;
+		return null;
 	}
 
-	public boolean authoriseLogin(String username, String password) {
-		if(userDB.get(username) == null) {
-			return false;
+	public UserDO authoriseLogin(String username, String password) {
+		
+		UserDO user = userDB.get(username);
+		
+		if(user == null) {
+			return user;
 		}
 		
-		if(userDB.get(username).equals(password))
-			return true;
+		if(user.getPassword().equals(password))
+			return user;
 		
-		return false;
+		return user;
 	}
 }

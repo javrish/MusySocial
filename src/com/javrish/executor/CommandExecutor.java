@@ -1,5 +1,7 @@
 package com.javrish.executor;
 
+import com.javrish.dataobject.SongDO;
+import com.javrish.dataobject.UserDO;
 import com.javrish.facade.MusyFacade;
 
 public class CommandExecutor {
@@ -16,22 +18,25 @@ public class CommandExecutor {
 		
 		switch(input[0]) { //switch case to under the command
 			case "play" : { //instruction for play command
-				if(searchSongByName(input[1]))
-					return "Playing: "+input[1];
+				SongDO song;
+				song = searchSongByName(input[1]); 
+				if(song != null)
+					return "Playing: " +song.getSongName() +"\nArtist: "+song.getArtist();
 				else
 					return "Song not found!";
 			}
 			
 			case "login" : { //instruction for login command
-				if(input.length < 3) {
+				if(input.length < 3) { //passowrd missing check
 					return "Password parameter missing!";
 				}
 				
 				String username = input[1];
 				String password = input[2];
 				
-				if(authoriseLogin(username,password))
-					return username+" Logged in Successfully!";
+				UserDO user = authoriseLogin(username,password); 
+				if(user != null) //authorisation
+					return user.getUsername()+" Logged in Successfully!";
 				else
 					return "Invalid username or password!";
 			}
@@ -43,11 +48,11 @@ public class CommandExecutor {
 		
 	} //END of execute
 	
-	private boolean authoriseLogin(String username, String password) {
+	private UserDO authoriseLogin(String username, String password) {
 		return musyFacade.authoriseLogin(username,password);
 		
 	}
-	private boolean searchSongByName(String songName) {
+	private SongDO searchSongByName(String songName) {
 		return musyFacade.searchSongByName(songName);
 		
 	}

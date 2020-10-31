@@ -40,7 +40,7 @@ public class TestMusySocial {
 
 	private void playMusicTest(String command) {
 		CommandExecutor executor =  new CommandExecutor();
-		assertOutput("Playing: Trampoline",executor.execute(command));
+		assertOutput("Playing: Trampoline\nArtist: Zayn",executor.execute(command));
 	}
 	
 	private void invalidCommandTest(String command) {
@@ -57,6 +57,6 @@ public class TestMusySocial {
 		if(expected.equals(actual)) {
 			return true;
 		}
-		throw new RuntimeException("Test Case Failed!");
+		throw new RuntimeException("Test Case Failed!\nExpected: \n"+expected +"\nActual: \n"+actual);
 	}
 }
