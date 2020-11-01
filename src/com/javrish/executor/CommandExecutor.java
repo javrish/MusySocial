@@ -7,9 +7,11 @@ import com.javrish.facade.MusyFacade;
 public class CommandExecutor {
 	
 	MusyFacade musyFacade;
+	UserDO user;
 	
 	public CommandExecutor() {
 		musyFacade = new MusyFacade();
+		user = null;
 	}
 	//login javrish jav123
 	public String execute(String command) {
@@ -18,6 +20,10 @@ public class CommandExecutor {
 		
 		switch(input[0]) { //switch case to under the command
 			case "play" : { //instruction for play command
+				if(!isLoggedIn()) {
+					return "Please login to use this command!";
+				}
+				
 				SongDO song;
 				song = searchSongByName(input[1]); 
 				if(song != null)
@@ -35,8 +41,11 @@ public class CommandExecutor {
 				String password = input[2];
 				
 				UserDO user = authoriseLogin(username,password); 
-				if(user != null) //authorisation
+				if(user != null) {//authorisation
+					this.user = user;
 					return user.getUsername()+" Logged in Successfully!";
+				}
+				
 				else
 					return "Invalid username or password!";
 			}
@@ -48,6 +57,10 @@ public class CommandExecutor {
 		
 	} //END of execute
 	
+	private boolean isLoggedIn() {
+		// TODO Auto-generated method stub
+		return user!=null;
+	}
 	private UserDO authoriseLogin(String username, String password) {
 		return musyFacade.authoriseLogin(username,password);
 		

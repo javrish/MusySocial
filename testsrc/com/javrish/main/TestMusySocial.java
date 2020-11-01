@@ -14,10 +14,16 @@ public class TestMusySocial {
 		testMusySocial.loginInvalidUserTest("login truth warrior");
 		testMusySocial.loginWithoutPasswordFailsTest("login javrish");
 		testMusySocial.loginWithMoreThanThreeInputsPassIgnoringTheExtraParameter("login javrish jav123 hey");
+		testMusySocial.playWithoutLoginPromptsUserToLogin("play Trampoline");
 		
 		System.out.println("All Test Cases Passes!");
 	}
 	
+	private void playWithoutLoginPromptsUserToLogin(String command) {
+		CommandExecutor executor = new CommandExecutor();
+		assertOutput("Please login to use this command!",executor.execute(command));
+	}
+
 	private void loginWithMoreThanThreeInputsPassIgnoringTheExtraParameter(String command) {
 		CommandExecutor executor = new CommandExecutor();
 		assertOutput("javrish Logged in Successfully!",executor.execute(command));
@@ -40,6 +46,7 @@ public class TestMusySocial {
 
 	private void playMusicTest(String command) {
 		CommandExecutor executor =  new CommandExecutor();
+		executor.execute("login javrish jav123");
 		assertOutput("Playing: Trampoline\nArtist: Zayn",executor.execute(command));
 	}
 	
@@ -50,6 +57,7 @@ public class TestMusySocial {
 	
 	private void playMusicNotInDBTest(String command) {
 		CommandExecutor executor =  new CommandExecutor();
+		executor.execute("login javrish jav123");
 		assertOutput("Song not found!",executor.execute(command));
 	}
 	
