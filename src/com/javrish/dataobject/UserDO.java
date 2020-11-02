@@ -1,23 +1,44 @@
 package com.javrish.dataobject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDO {
-	private String username;
+	private String userName;
 	private String password;
 	private String firstName;
 	private String lastName;
 	private long userId;
+	private List<String> history;
+	
+	public UserDO (){
+		history = new ArrayList<>();
+	}
+	
 	
 	/**
-	 * @return the username
+	 * @return the userName
 	 */
 	public String getUsername() {
-		return username;
+		return userName;
 	}
 	/**
-	 * @param username the username to set
+	 * @return the history
+	 */
+	public List<String> getHistory() {
+		return history;
+	}
+	/**
+	 * @param history the history to set
+	 */
+	public void setHistory(String newSongPlayed) {
+		this.history.add(newSongPlayed);
+	}
+	/**
+	 * @param username the userName to set
 	 */
 	public void setUsername(String username) {
-		this.username = username;
+		this.userName = username;
 	}
 	/**
 	 * @return the password
@@ -70,7 +91,7 @@ public class UserDO {
 	
 	@Override
 	public String toString() {
-		return "UserDO [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
+		return "UserDO [userName=" + userName + ", password=" + password + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", userId=" + userId + "]";
 	}
 	

@@ -1,18 +1,23 @@
 package com.javrish.facade;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.javrish.dataobject.SongDO;
 import com.javrish.dataobject.UserDO;
+import com.javrish.utility.MusyUtility;
 
 public class MusyFacade {
 	Map<String, SongDO> songDB;
 	Map<String, UserDO> userDB;
 	
+	MusyUtility musyUtility;
+	
 	public MusyFacade() {
 		initialiseSongDB();
 		initialiseUserDB();
+		musyUtility = new MusyUtility();
 	}
 	
 	private void initialiseSongDB() {
@@ -59,4 +64,27 @@ public class MusyFacade {
 		
 		return user;
 	}
+
+	public String getHistoryForUser(UserDO user) {
+		List<String> history = user.getHistory();
+		String output = "";
+		String lineBreak = "";
+		if(history.size() > 1) {
+			lineBreak = "\n";
+		}
+		for(String song: history) {
+			output += getStringSongDisplayOutputFromSongDOForHistory(searchSongByName(song))+lineBreak;
+		}
+		
+		return output;
+	}
+	
+	public String getStringSongDisplayOutputFromSongDO(SongDO song) {
+		return musyUtility.getStringSongDisplayOutputFromSongDO(song);
+	}
+	
+	public String getStringSongDisplayOutputFromSongDOForHistory(SongDO song) {
+		return musyUtility.getStringSongDisplayOutputFromSongDOForHistory(song);
+	}
+
 }

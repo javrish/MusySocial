@@ -25,29 +25,46 @@ public class CommandExecutor {
 				}
 				
 				SongDO song;
-				song = searchSongByName(input[1]); 
+				song = searchSongByName(input[1]);
+				
+				user.setHistory(input[1]); //Add song to logged in users history
+				
 				if(song != null)
-					return "Playing: " +song.getSongName() +"\nArtist: "+song.getArtist();
+					return musyFacade.getStringSongDisplayOutputFromSongDO(song);
 				else
 					return "Song not found!";
 			}
 			
 			case "login" : { //instruction for login command
-				if(input.length < 3) { //passowrd missing check
+				if(input.length < 3) { //Password missing check
 					return "Password parameter missing!";
 				}
 				
-				String username = input[1];
+				String userName = input[1];
 				String password = input[2];
 				
-				UserDO user = authoriseLogin(username,password); 
-				if(user != null) {//authorisation
+				UserDO user = authoriseLogin(userName,password); 
+				
+				if(user != null) {//Authorization
 					this.user = user;
 					return user.getUsername()+" Logged in Successfully!";
 				}
 				
 				else
 					return "Invalid username or password!";
+			}
+			
+			case "history" : { //show user song history
+				
+				if(!isLoggedIn()) {
+					return "Please login to use this command!";
+				}
+				
+				String output = getHistoryForUser();
+				if(output.isEmpty()) {
+					output = "Empty History!\nPlay some song to get it on history.";
+				}
+				return output;
 			}
 			
 			default: {
@@ -57,17 +74,21 @@ public class CommandExecutor {
 		
 	} //END of execute
 	
+	private String getHistoryForUser() {
+		return musyFacade.getHistoryForUser(user);
+		
+	}
+	
 	private boolean isLoggedIn() {
-		// TODO Auto-generated method stub
 		return user!=null;
 	}
+	
 	private UserDO authoriseLogin(String username, String password) {
 		return musyFacade.authoriseLogin(username,password);
-		
 	}
+	
 	private SongDO searchSongByName(String songName) {
-		return musyFacade.searchSongByName(songName);
-		
+		return musyFacade.searchSongByName(songName);	
 	}
 
 }//END of class

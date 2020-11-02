@@ -15,10 +15,35 @@ public class TestMusySocial {
 		testMusySocial.loginWithoutPasswordFailsTest("login javrish");
 		testMusySocial.loginWithMoreThanThreeInputsPassIgnoringTheExtraParameter("login javrish jav123 hey");
 		testMusySocial.playWithoutLoginPromptsUserToLogin("play Trampoline");
+		testMusySocial.showPlayHistory("history");
+		testMusySocial.showPlayHistoryWithoutLoginFails("history");
+		testMusySocial.showPlayHistoryEmptyHistoryTestWhenNoSongIsPlayedYet("history");
 		
 		System.out.println("All Test Cases Passes!");
 	}
 	
+	private void showPlayHistoryEmptyHistoryTestWhenNoSongIsPlayedYet(String command) {
+		CommandExecutor executor = new CommandExecutor();
+		executor.execute("login javrish jav123");
+		executor.execute("History");
+		
+		assertOutput("Empty History!\nPlay some song to get it on history.",executor.execute(command));
+		
+	}
+
+	private void showPlayHistoryWithoutLoginFails(String command) {
+		CommandExecutor executor = new CommandExecutor();
+		assertOutput("Please login to use this command!",executor.execute(command));
+	}
+
+	private void showPlayHistory(String command) {
+		CommandExecutor executor = new CommandExecutor();
+		executor.execute("login javrish jav123");
+		executor.execute("play Trampoline");
+		
+		assertOutput("Trampoline\nZayn",executor.execute(command));
+	}
+
 	private void playWithoutLoginPromptsUserToLogin(String command) {
 		CommandExecutor executor = new CommandExecutor();
 		assertOutput("Please login to use this command!",executor.execute(command));
