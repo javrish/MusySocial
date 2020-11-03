@@ -18,10 +18,21 @@ public class TestMusySocial {
 		testMusySocial.showPlayHistory("history");
 		testMusySocial.showPlayHistoryWithoutLoginFails("history");
 		testMusySocial.showPlayHistoryEmptyHistoryTestWhenNoSongIsPlayedYet("history");
+		testMusySocial.getSongList("list");
 		
 		System.out.println("All Test Cases Passes!");
 	}
 	
+	private void getSongList(String command) {
+		CommandExecutor executor = new CommandExecutor();
+		executor.execute("login javrish jav123");
+		
+		assertOutput("1. Trampoline\n" + 
+				"Zayn\n" + 
+				"2. SomeoneYouLoved\n" + 
+				"Lewis Capaldi\n",executor.execute(command));
+	}
+
 	private void showPlayHistoryEmptyHistoryTestWhenNoSongIsPlayedYet(String command) {
 		CommandExecutor executor = new CommandExecutor();
 		executor.execute("login javrish jav123");

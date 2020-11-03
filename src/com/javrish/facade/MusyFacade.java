@@ -1,8 +1,10 @@
 package com.javrish.facade;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.javrish.dataobject.SongDO;
 import com.javrish.dataobject.UserDO;
@@ -28,7 +30,14 @@ public class MusyFacade {
 		song.setSongId(10001l);
 		song.setArtist("Zayn");
 		
+		SongDO song2 = new SongDO();
+		
+		song2.setSongName("SomeoneYouLoved");
+		song2.setSongId(10002l);
+		song2.setArtist("Lewis Capaldi");
+		
 		songDB.put(song.getSongName(),song);
+		songDB.put(song2.getSongName(),song2);
 	}
 
 	private void initialiseUserDB() {
@@ -85,6 +94,22 @@ public class MusyFacade {
 	
 	public String getStringSongDisplayOutputFromSongDOForHistory(SongDO song) {
 		return musyUtility.getStringSongDisplayOutputFromSongDOForHistory(song);
+	}
+
+	public String getSongList() {
+		
+		String output = "";
+		Set<String> keySet = songDB.keySet();
+		String lineBreak = "";
+		if(keySet.size() > 1) {
+			lineBreak = "\n";
+		}
+		int i = 1;
+		for(String key : keySet) {
+			output += i++ +". "+musyUtility.getStringSongDisplayOutputFromSongDOForHistory(songDB.get(key)) + lineBreak;
+		}	
+		
+		return output;
 	}
 
 }

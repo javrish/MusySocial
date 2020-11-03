@@ -27,10 +27,10 @@ public class CommandExecutor {
 				SongDO song;
 				song = searchSongByName(input[1]);
 				
-				user.setHistory(input[1]); //Add song to logged in users history
-				
-				if(song != null)
+				if(song != null) {
+					user.setHistory(input[1]); //Add song to logged in users history
 					return musyFacade.getStringSongDisplayOutputFromSongDO(song);
+				}
 				else
 					return "Song not found!";
 			}
@@ -67,6 +67,17 @@ public class CommandExecutor {
 				return output;
 			}
 			
+			case "list" : { //get list of songs to play
+				
+				if(!isLoggedIn()) {
+					return "Please login to use this command!";
+				}
+				
+				String output = getSongList();
+				
+				return output;
+			}
+			
 			default: {
 				return "Invalid Command!";
 			}
@@ -74,9 +85,12 @@ public class CommandExecutor {
 		
 	} //END of execute
 	
+	private String getSongList() {
+		return musyFacade.getSongList();
+	}
+	
 	private String getHistoryForUser() {
 		return musyFacade.getHistoryForUser(user);
-		
 	}
 	
 	private boolean isLoggedIn() {
