@@ -1,5 +1,6 @@
 package com.javrish.executor;
 
+import com.javrish.BD.MusyBD;
 import com.javrish.dataobject.SongDO;
 import com.javrish.dataobject.UserDO;
 import com.javrish.facade.MusyFacade;
@@ -7,11 +8,11 @@ import com.javrish.facade.MusyFacade;
 public class CommandExecutor {
 	
 	MusyFacade musyFacade;
-	UserDO user;
+	MusyBD musyBD;
 	
 	public CommandExecutor() {
 		musyFacade = new MusyFacade();
-		user = null;
+		musyBD = new MusyBD();
 	}
 	//login javrish jav123
 	public String execute(String command) {
@@ -20,15 +21,15 @@ public class CommandExecutor {
 		
 		switch(input[0]) { //switch case to under the command
 			case "play" : { //instruction for play command
-				if(!isLoggedIn()) {
+				if(!musyBD.isLoggedIn()) {
 					return "Please login to use this command!";
 				}
 				
 				SongDO song;
-				song = searchSongByName(input[1]);
+				song = musyBD.searchSongByName(input[1]);
 				
 				if(song != null) {
-					user.setHistory(input[1]); //Add song to logged in users history
+					musyBD.getUser().setHistory(input[1]); //Add song to logged in users history
 					return musyFacade.getStringSongDisplayOutputFromSongDO(song);
 				}
 				else
@@ -43,10 +44,10 @@ public class CommandExecutor {
 				String userName = input[1];
 				String password = input[2];
 				
-				UserDO user = authoriseLogin(userName,password); 
+				UserDO user = musyBD.authoriseLogin(userName,password); 
 				
 				if(user != null) {//Authorization
-					this.user = user;
+					musyBD.setUser(user);
 					return user.getUsername()+" Logged in Successfully!";
 				}
 				
@@ -56,11 +57,11 @@ public class CommandExecutor {
 			
 			case "history" : { //show user song history
 				
-				if(!isLoggedIn()) {
+				if(!musyBD.isLoggedIn()) {
 					return "Please login to use this command!";
 				}
 				
-				String output = getHistoryForUser();
+				String output = musyBD.getHistoryForUser();
 				if(output.isEmpty()) {
 					output = "Empty History!\nPlay some song to get it on history.";
 				}
@@ -69,11 +70,11 @@ public class CommandExecutor {
 			
 			case "list" : { //get list of songs to play
 				
-				if(!isLoggedIn()) {
+				if(!musyBD.isLoggedIn()) {
 					return "Please login to use this command!";
 				}
 				
-				String output = getSongList();
+				String output = musyBD.getSongList();
 				
 				return output;
 			}
@@ -84,25 +85,5 @@ public class CommandExecutor {
 		} //END of switch
 		
 	} //END of execute
-	
-	private String getSongList() {
-		return musyFacade.getSongList();
-	}
-	
-	private String getHistoryForUser() {
-		return musyFacade.getHistoryForUser(user);
-	}
-	
-	private boolean isLoggedIn() {
-		return user!=null;
-	}
-	
-	private UserDO authoriseLogin(String username, String password) {
-		return musyFacade.authoriseLogin(username,password);
-	}
-	
-	private SongDO searchSongByName(String songName) {
-		return musyFacade.searchSongByName(songName);	
-	}
 
 }//END of class
